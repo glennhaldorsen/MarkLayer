@@ -52,7 +52,7 @@ const indexable = new Set();
 
 for (const file of htmlFiles) {
   const html = await readFile(join(DIST, file), 'utf8');
-  const page = `/${file.replace(/\.html$/, '')}`;
+  const page = `/${file.replaceAll('\\', '/').replace(/\.html$/, '')}`;
 
   // 1. Every internal link resolves to something we actually ship.
   for (const [, raw] of html.matchAll(/href="([^"]+)"/g)) {
@@ -239,7 +239,7 @@ const served = [
         .join('/')
         .replace(/\.html$/, '')}`,
   ),
-  ...files.filter((f) => /\.(md|xml)$/.test(f)).map((f) => `/${f}`),
+  ...files.filter((f) => /\.(md|xml)$/.test(f)).map((f) => `/${f.replaceAll('\\', '/')}`),
 ];
 for (const page of served) {
   if (page === '/index' || uncached.has(page)) continue;
